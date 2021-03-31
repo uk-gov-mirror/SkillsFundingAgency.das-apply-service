@@ -743,6 +743,7 @@ namespace SFA.DAS.ApplyService.Web.Controllers
 
             if (isFileUploadPage)
             {
+                _logger.LogError($"SaveAnswersGiven : About to upload to QNA for SectionId {sectionId} | PageId {pageId} ");
                 var uploadFileResult = await _qnaApiClient.Upload(applicationId, sectionId, pageId, HttpContext.Request.Form.Files);
                 validationPassed = uploadFileResult.ValidationPassed;
                 validationErrors = uploadFileResult.ValidationErrors;
@@ -956,6 +957,8 @@ namespace SFA.DAS.ApplyService.Web.Controllers
 
         private List<Answer> GetAnswersFromFiles()
         {
+            _logger.LogError("GetAnswersFromFiles executed");
+
             List<Answer> answers = new List<Answer>();
 
             // Add answers from the Files sent within the Form post
@@ -963,6 +966,7 @@ namespace SFA.DAS.ApplyService.Web.Controllers
             {
                 foreach (var file in HttpContext.Request.Form.Files)
                 {
+                    _logger.LogError($"GetAnswersFromFiles : QuestionId {file.Name} | FileName {file.FileName} ");
                     answers.Add(new Answer() { QuestionId = file.Name, Value = file.FileName });
                 }
 
